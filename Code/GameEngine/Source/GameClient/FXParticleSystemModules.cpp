@@ -587,9 +587,6 @@ struct PointEmissionVolumeModuleTag
     static const char *const &s_name;
 };
 
-const char *const &PointEmissionVolumeModuleTag::s_key = POINT_EMISSION_VOLUME_MODULE_KEY;
-const char *const &PointEmissionVolumeModuleTag::s_name = POINT_EMISSION_VOLUME_MODULE_NAME;
-
 typedef ConcreteModuleTemplate<PointEmissionVolumeModuleTag> PointEmissionVolumeModuleConcrete;
 typedef ConcreteModuleClass<PointEmissionVolumeModuleTag> PointEmissionVolumeModuleClassConcrete;
 
@@ -615,6 +612,12 @@ FX_WRAPPER(4, CYLINDRICAL_EMISSION_VELOCITY, CylindricalEmissionVelocityModule,
     CylindricalEmissionVelocityModuleTemplate)
 FX_WRAPPER(4, OUTWARD_EMISSION_VELOCITY, OutwardEmissionVelocityModule,
     OutwardEmissionVelocityModuleTemplate)
+
+// Defined after the wrappers above, cl gives these references dynamic
+// initializers (retail 0x007AF6B1/0x007AF6BC), as it does the ortho tag's;
+// defined beside the struct they are bound statically and emit no code.
+const char *const &PointEmissionVolumeModuleTag::s_key = POINT_EMISSION_VOLUME_MODULE_KEY;
+const char *const &PointEmissionVolumeModuleTag::s_name = POINT_EMISSION_VOLUME_MODULE_NAME;
 
 // The ortho velocity tag is the other plain struct.
 extern const char *const ORTHO_EMISSION_VELOCITY_MODULE_KEY;
