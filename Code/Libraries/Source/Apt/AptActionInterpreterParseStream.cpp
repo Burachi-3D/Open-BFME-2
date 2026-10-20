@@ -45,9 +45,12 @@ StringNode0070D9F0 *Rva0070DBB0Intern(const char *string);
 void Rva0070DDC0Remove(StringNode0070D9F0 *node);
 
 class Rva006DB160 { public: void *allocBlock(int blockSize); };
-class Rva006DB270;
+class Rva006DB270
+{
+public:
+	void freeBlock(void *block, int size);
+};
 extern Rva006DB270 *g_pChainBlockAllocator;
-void Rva006D8680Free(void *block, int blockSize);
 
 // The two pooled 12-byte value types built from constant types 8 and 4.
 class Rva006FB9C0 : public AptValue
@@ -55,7 +58,7 @@ class Rva006FB9C0 : public AptValue
 public:
 	Rva006FB9C0(int value);
 	static void *operator new(unsigned int n) { return ((Rva006DB160 *)g_pChainBlockAllocator)->allocBlock(n); }
-	static void operator delete(void *p, unsigned int n) { Rva006D8680Free(p, n); }
+	static void operator delete(void *p, unsigned int n) { g_pChainBlockAllocator->freeBlock(p, (int)n); }
 private:
 	int m_value;
 };
@@ -65,7 +68,7 @@ class Rva006FB960 : public AptValue
 public:
 	Rva006FB960(int value);
 	static void *operator new(unsigned int n) { return ((Rva006DB160 *)g_pChainBlockAllocator)->allocBlock(n); }
-	static void operator delete(void *p, unsigned int n) { Rva006D8680Free(p, n); }
+	static void operator delete(void *p, unsigned int n) { g_pChainBlockAllocator->freeBlock(p, (int)n); }
 private:
 	int m_value;
 };
